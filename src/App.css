@@ -1,0 +1,126 @@
+/* src/App.css */
+:root {
+  --bg-color: #121212;
+  --card-bg: #1e1e1e;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --accent: #4caf50; /* A clean tech green */
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.portfolio-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Hero Section */
+.hero {
+  margin-bottom: 3rem;
+  border-bottom: 1px solid #333;
+  padding-bottom: 2rem;
+}
+
+.hero h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2.5rem;
+}
+
+.hero h2 {
+  margin: 0 0 1rem 0;
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.social-links a {
+  color: var(--accent);
+  text-decoration: none;
+  margin-right: 1.5rem;
+  font-weight: bold;
+}
+
+.social-links a:hover {
+  text-decoration: underline;
+}
+
+/* Grid Layout */
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+/* The Game Card */
+.game-card {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.game-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+/* Enforcing the 4:3 Aspect Ratio */
+.card-media {
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  background-color: #2a2a2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the GIF fills the 4:3 box without stretching */
+}
+
+.placeholder-text {
+  color: #555;
+  font-weight: bold;
+}
+
+/* Card Content & Typography */
+.card-content {
+  padding: 1rem;
+}
+
+.card-title {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.1rem;
+}
+
+.card-duration {
+  margin: 0 0 1rem 0;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* The Tags */
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  background-color: #333;
+  color: #ddd;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
