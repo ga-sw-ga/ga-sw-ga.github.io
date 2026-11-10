@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import GameCard from './components/GameCard'
 import './App.css'
 
@@ -130,6 +130,69 @@ const gamesData = [
 
 function App() {
   const [selectedGame, setSelectedGame] = useState(null)
+  const modalContentRef = useRef(null)
+  const infoRef = useRef(null)
+  const descRef = useRef(null)
+
+  // Prevent background scrolling and handle Escape key to close modal
+  useEffect(() => {
+    if (!selectedGame) return
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setSelectedGame(null)
+      }
+    }
+
+    const originalOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.body.style.overflow = originalOverflow
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [selectedGame])
+
+  // Calculate maximum media height so the image can be reasonably big,
+  // while ensuring the first line of the description is always visible when opened.
+  // Beyond this point, the modal is scrollable for the remaining lines of description.
+  useLayoutEffect(() => {
+    if (!selectedGame) return
+
+    const calculateMediaLimit = () => {
+      if (!modalContentRef.current || !infoRef.current || !descRef.current) return
+
+      // Ensure modal starts at the top
+      modalContentRef.current.scrollTop = 0
+
+      const windowH = window.innerHeight
+      const modalMaxH = windowH * 0.9
+
+      const infoRect = infoRef.current.getBoundingClientRect()
+      const descRect = descRef.current.getBoundingClientRect()
+      const descStyle = window.getComputedStyle(descRef.current)
+      const lineHeight = parseFloat(descStyle.lineHeight) || 28
+
+      // Vertical distance from top of modal-info to bottom of the description's first line
+      const headerToFirstLineBottom = (descRect.top - infoRect.top) + lineHeight
+      
+      // Margin at the bottom so the first line is clearly visible with breathing room
+      const safetyMargin = 20
+
+      // Maximum media height that still leaves room for title, tags, and first line of description
+      const maxAllowed = Math.floor(modalMaxH - headerToFirstLineBottom - safetyMargin)
+      
+      // Clamp between a minimum reasonable height (160px) and natural 16:9 on 800px max width (450px)
+      const finalMaxHeight = Math.max(160, Math.min(450, maxAllowed))
+
+      modalContentRef.current.style.setProperty('--modal-media-max-h', `${finalMaxHeight}px`)
+    }
+
+    calculateMediaLimit()
+    window.addEventListener('resize', calculateMediaLimit)
+    return () => window.removeEventListener('resize', calculateMediaLimit)
+  }, [selectedGame])
 
   return (
     <div className="portfolio-container">
@@ -164,7 +227,7 @@ function App() {
       {selectedGame && (
         <div className="modal-overlay" onClick={() => setSelectedGame(null)}>
           
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <div className="modal-content" ref={modalContentRef} onClick={(e) => e.stopPropagation()}>
             
             <button className="close-btn" onClick={() => setSelectedGame(null)}>✕</button>
             
@@ -215,7 +278,7 @@ function App() {
               )}
             </div>
             
-            <div className="modal-info">
+            <div className="modal-info" ref={infoRef}>
               <h2>{selectedGame.title}</h2>
               {/* Render the role in the modal */}
               <h4 className="modal-role">{selectedGame.role}</h4>
@@ -227,7 +290,7 @@ function App() {
                 ))}
               </div>
               
-              <p className="modal-description">{selectedGame.description}</p>
+              <p className="modal-description" ref={descRef}>{selectedGame.description}</p>
             </div>
 
           </div>

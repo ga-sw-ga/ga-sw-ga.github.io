@@ -246,6 +246,25 @@ body {
   position: relative;
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.8), 0 0 24px var(--accent-glow);
   animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.35);
 }
 
 @keyframes modalFadeIn {
@@ -290,6 +309,9 @@ body {
   overflow: hidden;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
+  flex-shrink: 0;
+  max-height: var(--modal-media-max-h, min(450px, calc(90vh - 270px)));
+  min-height: 160px;
 }
 
 /* Ambient backdrop (YouTube / Social media glow effect) */
@@ -352,3 +374,22 @@ body {
   font-size: 1.05rem;
   margin-top: 1rem;
 }
+
+@media (max-width: 600px) {
+  .modal-overlay {
+    padding: 0.75rem;
+  }
+
+  .modal-content {
+    border-radius: 12px;
+  }
+
+  .modal-info {
+    padding: 1.25rem 1rem 1.5rem 1rem;
+  }
+
+  .modal-info h2 {
+    font-size: 1.4rem;
+  }
+}
+
