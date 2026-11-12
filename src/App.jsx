@@ -199,7 +199,7 @@ function App() {
       
       <header className="hero">
         <h1>Parsa Rahmati</h1>
-        <h2>Software Engineer | AI Architect | Game Developer</h2>
+        <h2>Game Developer | Game Designer</h2>
         <div className="social-links">
           <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a>
           <a href="https://linkedin.com/in/parsa-rahmati" target="_blank" rel="noopener noreferrer">LinkedIn</a>
